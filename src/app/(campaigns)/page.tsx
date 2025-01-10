@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import ClockLoader from "react-spinners/ClockLoader";
+import { useRouter } from "next/navigation";
 
 interface Campaign {
   _id: string;
@@ -14,6 +16,18 @@ interface Campaign {
 const CampaignListPage = () => {
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showLogin, setShowLogin] = useState(true);
+  const router = useRouter();
+
+  useEffect(() => {
+    const username = localStorage.getItem("name");
+
+    if (!username || username.split("").length === 0) {
+      router.push("/login");
+    } else {
+      setShowLogin(false);
+    }
+  }, [router]);
 
   async function getAllCampaigns() {
     try {

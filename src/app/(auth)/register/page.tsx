@@ -42,9 +42,7 @@ const Register = () => {
       setUsername("");
       setEmail("");
       setPassword("");
-      const data = await response.json();
-      localStorage.setItem("name", data.username);
-      router.push("/");
+      router.push("/login");
     } catch (error) {
       console.error("Error during registration:", error);
       setError("An unexpected error occurred. Please try again.");

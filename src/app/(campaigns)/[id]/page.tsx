@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import ClockLoader from "react-spinners/ClockLoader";
+import { useRouter } from "next/navigation";
 
 interface Campaign {
   _id: string;
@@ -22,6 +24,18 @@ const CampaignDetailsPage = ({
   const [loading, setLoading] = useState(true);
   const [submissionLink, setSubmissionLink] = useState("");
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [showLogin, setShowLogin] = useState(true);
+  const router = useRouter();
+
+  useEffect(() => {
+    const username = localStorage.getItem("name");
+
+    if (!username || username.split("").length === 0) {
+      router.push("/login");
+    } else {
+      setShowLogin(false);
+    }
+  }, [router]);
 
   async function getCampaignById() {
     if (!id) return;
@@ -44,29 +58,39 @@ const CampaignDetailsPage = ({
   }
 
   const handleSubmit = async () => {
+    const token = localStorage.getItem("token");
+    const submissionDate = new Date().toISOString();
+
     if (!submissionLink) {
       alert("Please provide a submission link!");
       return;
     }
 
+    if (!campaign) {
+      console.error("Campaign is not available.");
+      alert("Campaign not found.");
+      return;
+    }
+
     try {
-      const response = await fetch(
-        `https://influencer-backend.vercel.app/campaigns/${id}/submit`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            content: submissionLink,
-          }),
+      const response = await fetch(`http://localhost:3001/submissions`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
-      );
+        body: JSON.stringify({
+          content: submissionLink,
+          submissionDate: submissionDate,
+          campaignId: campaign._id,
+        }),
+      });
 
       if (response.ok) {
         setSubmitSuccess(true);
         alert("Submission Successful!");
         setSubmissionLink("");
+        setSubmitSuccess(false);
       } else {
         alert("Failed to submit content");
       }
@@ -117,7 +141,7 @@ const CampaignDetailsPage = ({
         />
         <button
           onClick={handleSubmit}
-          className="bg-primary rounded-md px-4 py-2 text-white hover:bg-blue-600"
+          className="rounded-md bg-primary px-4 py-2 text-white hover:bg-blue-600"
         >
           Submit
         </button>

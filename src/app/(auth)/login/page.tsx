@@ -33,8 +33,9 @@ const Login = () => {
         setError(data?.message || "An error occurred. Please try again.");
         return;
       }
-
+      console.log(data);
       localStorage.setItem("name", data.username);
+      localStorage.setItem("token", data.access_token);
       setEmail("");
       setPassword("");
 
