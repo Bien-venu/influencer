@@ -1,4 +1,5 @@
 "use client";
+
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import ClockLoader from "react-spinners/ClockLoader";
@@ -36,8 +37,24 @@ const CampaignListPage = () => {
     getAllCampaigns();
   }, []);
 
+  const [name, setName] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const username = localStorage.getItem("name");
+      if (username && username.split("").length > 0) {
+        setName(true);
+      }
+    }
+  }, []);
+
   return (
     <div className="flex min-h-screen flex-col gap-6 px-8 sm:px-20 xl:px-72">
+      {name && (
+        <h1 className="flex pt-4 text-2xl font-medium">
+          Welcome, {localStorage.getItem("name")}!
+        </h1>
+      )}
       <h1 className="text-base font-medium">All Campaigns</h1>
 
       {loading ? (

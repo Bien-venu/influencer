@@ -117,7 +117,7 @@ const CampaignDetailsPage = ({
         />
         <button
           onClick={handleSubmit}
-          className="rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+          className="bg-primary rounded-md px-4 py-2 text-white hover:bg-blue-600"
         >
           Submit
         </button>

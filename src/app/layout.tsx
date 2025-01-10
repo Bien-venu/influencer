@@ -15,7 +15,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <main className="flex h-screen w-full flex-col gap-2 overflow-hidden p-2 pb-8">
+        <main className="flex h-screen w-full flex-col gap-2 overflow-hidden py-2 pb-8">
           <Top />
           {children}
         </main>
