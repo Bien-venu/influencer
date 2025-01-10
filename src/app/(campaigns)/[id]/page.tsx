@@ -73,7 +73,7 @@ const CampaignDetailsPage = ({
     }
 
     try {
-      const response = await fetch(`http://localhost:3001/submissions`, {
+      const response = await fetch(`https://influencer-backend.vercel.app/submissions`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
